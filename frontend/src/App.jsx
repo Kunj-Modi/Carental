@@ -1,17 +1,27 @@
 import "./App.css";
-import Navbar from "./components/navbar";
-import SigninForm from "./components/signinForm";
-import LoginForm from "./components/loginForm";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { app } from "./firebaseConfig";
+
+import Navbar from "./components/Navbar";
+import SignUpForm from "./components/SignUpForm";
+import SignInForm from "./components/SignInForm";
 
 import React from "react";
 
 function App() {
   return (
     <>
-      <Navbar />
+      <BrowserRouter>
+        <Navbar />
 
-      <LoginForm />
-      <SigninForm />
+        <Routes>
+          <Route path="/" element={<h1>Kunj Modi</h1>} />
+
+          <Route path="signin/" element={<SignInForm />} />
+
+          <Route path="signup/" element={<SignUpForm />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

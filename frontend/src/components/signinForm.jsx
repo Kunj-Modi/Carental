@@ -1,11 +1,16 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-export default function SigninForm() {
+export default function SignInForm() {
   const [data, setData] = useState({
     email: "",
     password: "",
   });
+
+  const auth = getAuth();
+  const navigate = useNavigate();
 
   const handleInput = (event) => {
     let inputs = { [event.target.name]: event.target.value };
@@ -13,8 +18,14 @@ export default function SigninForm() {
     console.log(data);
   };
 
-  const handleSubmit = (event) => {
-    console.log(data);
+  const handleSubmit = async () => {
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then((response) => {
+        navigate("/");
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
 
   return (
@@ -39,33 +50,28 @@ export default function SigninForm() {
                   />
                 </svg>
               </div>
-              <form action="">
-                <input
-                  type="email"
-                  name="email"
-                  className="form-control my-4 py-2"
-                  placeholder="Email"
-                  onChange={(event) => handleInput(event)}
-                />
-                <input
-                  type="password"
-                  name="password"
-                  className="form-control my-4 py-2"
-                  placeholder="Password"
-                  onChange={(event) => handleInput(event)}
-                />
-                <div className="text-center mt-3">
-                  <button
-                    className="btn btn-dark"
-                    onClick={(event) => handleSubmit(event)}
-                  >
-                    Login
-                  </button>
-                  <a href="#" className="nav-link">
-                    Already have an account ?
-                  </a>
-                </div>
-              </form>
+              <input
+                type="email"
+                name="email"
+                className="form-control my-4 py-2"
+                placeholder="Email"
+                onChange={(event) => handleInput(event)}
+              />
+              <input
+                type="password"
+                name="password"
+                className="form-control my-4 py-2"
+                placeholder="Password"
+                onChange={(event) => handleInput(event)}
+              />
+              <div className="text-center mt-3">
+                <button className="btn btn-dark" onClick={handleSubmit}>
+                  SignIn
+                </button>
+                <Link to="/signup/" className="nav-link">
+                  Don't have an account ?
+                </Link>
+              </div>
             </div>
           </div>
         </div>
